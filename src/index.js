@@ -1,3 +1,4 @@
+const {parser} = require('./parser')
 const {
   doc: {
     builders: { concat }
@@ -6,20 +7,21 @@ const {
 
 const languages = [
   {
-    extensions: ['.toml'],
-    name: 'TOML',
-    parsers: ['toml-parse']
+    extensions: ['.ts'],
+    name: 'typescript',
+    parsers: ['fat-32']
   }
 ]
 
+
 const parsers = {
-  'toml-parse': {
-    parse: text => parserr(text),
-    astFormat: 'toml-ast'
+  'fat-32': {
+    parse: text => parser(text),
+    astFormat: 'ts-ast'
   }
 }
 
-function printToml(path, options, print) {
+function printTs(path, options, print) {
   console.log(JSON.stringify(path, null, 2))
   const node = path.getValue()
 
@@ -34,8 +36,8 @@ function printToml(path, options, print) {
 }
 
 const printers = {
-  'toml-ast': {
-    print: printToml
+  'ts-ast': {
+    print: printTs
   }
 }
 
@@ -46,29 +48,3 @@ module.exports = {
 }
 
 
-function parserr(text) {
-  const parsed = [];
-  let sqlTagIndex = text.indexOf("sql`");
-  while (sqlTagIndex !== -1) {
-    // console.log(text);
-    if (sqlTagIndex === 0) {
-      const closeTag = text.substring(4).indexOf("`");
-      const content = text.substring(0, closeTag + 5);
-      text = text.substring(closeTag + 1);
-      parsed.push({
-        type: "query",
-        content: content,
-      });
-    } else {
-      const content = text.substring(0, sqlTagIndex);
-      text = text.substring(sqlTagIndex);
-      parsed.push({
-        type: "nothing",
-        content: content,
-      });
-    }
-    sqlTagIndex = text.indexOf("sql`");
-  }
-
-  return parsed;
-}
