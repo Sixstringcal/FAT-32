@@ -1,4 +1,3 @@
-const parser = require('toml/lib/parser')
 const {
   doc: {
     builders: { concat }
