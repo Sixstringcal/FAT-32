@@ -6,7 +6,7 @@ function parser(text) {
       if (sqlTagIndex === 0) {
         const closeTag = text.substring(4).indexOf("`");
         const content = text.substring(0, closeTag + 5);
-        text = text.substring(closeTag + 1);
+        text = text.substring(closeTag + 5);
         parsed.push({
           type: "query",
           content: content,
@@ -21,7 +21,13 @@ function parser(text) {
       }
       sqlTagIndex = text.indexOf("sql`");
     }
-  
+    if(text.length > 0){
+        parsed.push({
+            type: "nothing",
+            content: text,
+          });
+    }
+
     return parsed;
   }
   

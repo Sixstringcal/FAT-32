@@ -22,16 +22,18 @@ const parsers = {
 }
 
 function printTs(path, options, print) {
-  console.log(JSON.stringify(path, null, 2))
   const node = path.getValue()
-
   if (Array.isArray(node)) {
     return concat(path.map(print))
   }
-
+  console.log(node.type)
   switch (node.type) {
-    default:
+    case undefined:
       return ''
+    case "query":
+      return node.content.toLowerCase();
+    default:
+      return node.content
   }
 }
 
