@@ -26,15 +26,38 @@ function printTs(path, options, print) {
   if (Array.isArray(node)) {
     return concat(path.map(print))
   }
-  console.log(node.type)
-  switch (node.type) {
-    case undefined:
-      return ''
-    case "query":
-      return node.content.toLowerCase();
-    default:
-      return node.content
+  if(node === undefined){
+    return ''
   }
+  console.log('asdf')
+  let printed = '';
+  switch(node.type){
+    case "Program":
+      printed = printRecurisve(node.body, options, print);
+      break;
+    case "FunctionDeclaration":
+      printed = `function ${node.id.name} ()`
+      break;
+    default:
+      printed = '';
+      break;
+  }
+  return printed;
+}
+
+function printRecurisve(node, options, print) {
+  if (Array.isArray(node)) {
+    return concat(node.map(print))
+  }
+  let printed = '';
+  switch(node.type){
+    case "Program":
+      printed = printRecursive(node.body, options, print);
+      break;
+    case "FunctionDeclaration":
+      printed = `function ${node.id.name} ()`
+  }
+  return printed;
 }
 
 const printers = {
