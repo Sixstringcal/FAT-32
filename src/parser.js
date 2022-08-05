@@ -3,6 +3,7 @@ const prettier = require('prettier')
 
 
 function parser(text) {
-   return  parsers.parse(prettier.format(text, {parser: "babel-ts"}));
+    let a = prettier.format(text, {parser: "babel-ts"})
+   return  a;
 }
   module.exports =  {parser}
